@@ -19,6 +19,7 @@ export const Textures = {
 
 Textures.colorTexture.colorSpace = SRGBColorSpace
 Textures.matcapTexture.colorSpace = SRGBColorSpace
+Textures.grass.colorSpace = SRGBColorSpace
 
 // colorTexture.generateMipmaps = false // When minFilter = NearestFilter
 Textures.colorTexture.magFilter = NearestFilter

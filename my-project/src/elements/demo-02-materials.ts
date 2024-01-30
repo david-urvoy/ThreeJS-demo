@@ -3,7 +3,6 @@ import WebGL from 'three/examples/jsm/capabilities/WebGL'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader'
 import { camera, controls } from '../structure/camera'
 import { debugGUI } from '../structure/debug-gui'
-import { renderer } from '../structure/renderer'
 import { scene } from '../structure/scene'
 import { Textures } from './textures'
 
@@ -50,24 +49,24 @@ const debugObject = {
 /**
  * ROTATION
  */
-const clock = new Clock()
-function animate() {
-	requestAnimationFrame(animate)
+// const clock = new Clock()
+// function animate() {
+// 	requestAnimationFrame(animate)
 
-	if (debugObject.rotation) {
-		const rotationAngle = clock.getDelta() * .05 * Math.PI
-		sphere.rotation.x += -rotationAngle * 1.3
-		plane.rotation.x += -rotationAngle * 1.3
-		torus.rotation.x += -rotationAngle * 1.3
-		sphere.rotation.y += rotationAngle
-		plane.rotation.y += rotationAngle
-		torus.rotation.y += rotationAngle
+// 	if (debugObject.rotation) {
+// 		const rotationAngle = clock.getDelta() * .05 * Math.PI
+// 		sphere.rotation.x += -rotationAngle * 1.3
+// 		plane.rotation.x += -rotationAngle * 1.3
+// 		torus.rotation.x += -rotationAngle * 1.3
+// 		sphere.rotation.y += rotationAngle
+// 		plane.rotation.y += rotationAngle
+// 		torus.rotation.y += rotationAngle
 
-	}
-	controls.update()
-	renderer.render(scene, camera)
-}
-WebGL.isWebGLAvailable() ? animate() : document.getElementById('container')?.appendChild(WebGL.getWebGLErrorMessage())
+// 	}
+// 	controls.update()
+// 	renderer.render(scene, camera)
+// }
+// WebGL.isWebGLAvailable() ? animate() : document.getElementById('container')?.appendChild(WebGL.getWebGLErrorMessage())
 
 /**
  * DEBUG

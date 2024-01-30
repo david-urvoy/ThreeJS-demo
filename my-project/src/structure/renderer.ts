@@ -1,22 +1,26 @@
 import { Clock, WebGLRenderer, WebGLRendererParameters } from 'three'
-import { canvas, dimensions } from './defaults'
+import WebGL from 'three/examples/jsm/capabilities/WebGL'
 import { camera, controls } from './camera'
+import { canvas, dimensions } from './defaults'
 import { scene } from './scene'
 
-type Animation = (time: number) => void
+type Animation = (delta: number, elapsedTime: number) => void
+
+const cursor = { x: 0, y: 0 }
+const clock = new Clock()
 
 export class AnimatedRenderer extends WebGLRenderer {
 
 	private animation?: Animation
 
-	constructor ({ animation, ...parameters }: WebGLRendererParameters & { animation?: Animation }) {
-		super(parameters)
+	constructor ({ animation = () => { }, ...parameters }: WebGLRendererParameters & { animation?: Animation }) {
+		if (!WebGL.isWebGLAvailable()) document.getElementById('container')?.appendChild(WebGL.getWebGLErrorMessage())
+
+		super({ canvas, ...parameters })
+
 		this.animation = animation
 		this.setSize(window.innerWidth, window.innerHeight)
 		this.shadowMap.enabled = true
-
-
-		const cursor = { x: 0, y: 0 }
 
 		document.addEventListener('mousemove', ({ clientX, clientY }) => {
 			cursor.x = 2 * (clientX / dimensions.width - .5)
@@ -37,28 +41,14 @@ export class AnimatedRenderer extends WebGLRenderer {
 		})
 	}
 
-	setAnimation(animation: Animation) {
-		this.animation = animation
-		return this
-	}
-
-	clock = new Clock()
-
-	animate() {
-		requestAnimationFrame(this.animate.bind(this))
-
-		this.animation?.(this.clock.getElapsedTime())
+	start() {
+		this.animation?.(clock.getDelta(), clock.getElapsedTime())
 
 		controls.update()
 		this.render(scene, camera)
+
+		requestAnimationFrame(this.start.bind(this))
 	}
 
-}
-
-const threeRenderer = new AnimatedRenderer({ canvas })
-
-export const renderer = {
-	...threeRenderer,
-	animate: () => console.log('animation')
 }
 
