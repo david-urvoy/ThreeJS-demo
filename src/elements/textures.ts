@@ -1,8 +1,9 @@
-import { LoadingManager, NearestFilter, SRGBColorSpace, TextureLoader } from 'three'
+import { CubeTextureLoader, LoadingManager, NearestFilter, SRGBColorSpace, TextureLoader } from 'three'
 
 const loadingManager = new LoadingManager()
 
 const textureLoader = new TextureLoader(loadingManager)
+const cubeTextureLoader = new CubeTextureLoader(loadingManager)
 
 export const Textures = {
 	colorTexture: textureLoader.load('/textures/door/color.jpg'),
@@ -14,7 +15,15 @@ export const Textures = {
 	normalTexture: textureLoader.load('/textures/door/normal.jpg'),
 	matcapTexture: textureLoader.load('/textures/matcaps/1.png'),
 	gradientTexture: textureLoader.load('/textures/gradients/5.jpg'),
-	grass: textureLoader.load('/textures/grass/color.jpg')
+	grass: textureLoader.load('/textures/grass/color.jpg'),
+	environmentMaps: cubeTextureLoader.load([
+		'textures/environmentMap/0/px.png',
+		'textures/environmentMap/0/nx.png',
+		'textures/environmentMap/0/py.png',
+		'textures/environmentMap/0/ny.png',
+		'textures/environmentMap/0/pz.png',
+		'textures/environmentMap/0/nz.png',
+	])
 }
 
 Textures.colorTexture.colorSpace = SRGBColorSpace

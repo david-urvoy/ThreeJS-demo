@@ -4,7 +4,7 @@ import { camera, controls } from './camera'
 import { canvas, dimensions } from './defaults'
 import { scene } from './scene'
 
-type Animation = (delta: number, elapsedTime: number) => void
+type Animation = ({ delta, elapsedTime }: { delta: number, elapsedTime: number }) => void
 
 const cursor = { x: 0, y: 0 }
 const clock = new Clock()
@@ -42,7 +42,7 @@ export class AnimatedRenderer extends WebGLRenderer {
 	}
 
 	start() {
-		this.animation?.(clock.getDelta(), clock.getElapsedTime())
+		this.animation?.({ delta: clock.getDelta(), elapsedTime: clock.getElapsedTime() })
 
 		controls.update()
 		this.render(scene, camera)

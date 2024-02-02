@@ -1,4 +1,4 @@
-import { AxesHelper, BufferAttribute, BufferGeometry, Points, PointsMaterial } from 'three'
+import { AxesHelper, BoxGeometry, BufferAttribute, BufferGeometry, Group, Mesh, MeshBasicMaterial, Points, PointsMaterial } from 'three'
 import { AnimatedRenderer } from '../structure/renderer'
 import { scene } from '../structure/scene'
 
@@ -12,7 +12,8 @@ scene.add(new AxesHelper(1))
 const snowflakesGeometry = new BufferGeometry()
 const snowflakesMaterial = new PointsMaterial({ color: 'white', size: .2, sizeAttenuation: true })
 
-export const snowflakes = new Points(snowflakesGeometry, snowflakesMaterial)
+const snowflakes = new Points(snowflakesGeometry, snowflakesMaterial)
+export const winter = new Group().add(snowflakes, new Mesh(new BoxGeometry(SCENE_DIMENSIONS.x, SCENE_DIMENSIONS.y, SCENE_DIMENSIONS.z), new MeshBasicMaterial({ wireframe: true })))
 
 let snowflakesPositions: [number, number, number, number, number][] = []
 setInterval(() => {

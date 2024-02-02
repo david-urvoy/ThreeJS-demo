@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  cannon:
+    specifier: ^0.6.2
+    version: 0.6.2
   gsap:
     specifier: ^3.12.5
     version: 3.12.5
@@ -16,6 +19,9 @@ dependencies:
     version: 0.160.1
 
 devDependencies:
+  '@types/cannon':
+    specifier: ^0.1.12
+    version: 0.1.12
   '@types/three':
     specifier: ^0.160.0
     version: 0.160.0
@@ -336,6 +342,10 @@ packages:
     dev: true
     optional: true
 
+  /@types/cannon@0.1.12:
+    resolution: {integrity: sha512-YzVDrjM+H1IH4pnw23nDFDXaWEyvYIq/Tmp75wg9CmtIiBJd3GtXzo5UXp+bAgk76fom9RhSlQIzHT8haF5VuQ==}
+    dev: true
+
   /@types/estree@1.0.5:
     resolution: {integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==}
     dev: true
@@ -356,6 +366,10 @@ packages:
   /@types/webxr@0.5.11:
     resolution: {integrity: sha512-bo3K4UFBwP1RbMjuMin9cgyThD5YxjIWjQHJT7O7PVU2DB81qop7JnZAXRmrrGPbEsoHcdUmjmQDXI6zfqkVIQ==}
     dev: true
+
+  /cannon@0.6.2:
+    resolution: {integrity: sha512-n/7wWSXr8KOSvjad2x0fJHgpMepKjOKi+NdSnjfYyijoDBZnp4JQKgPcpv28jlXoWM+N9zVYU09J0A6Qxx+Y7w==}
+    dev: false
 
   /esbuild@0.19.11:
     resolution: {integrity: sha512-HJ96Hev2hX/6i5cDVwcqiJBBtuo9+FeIJOtZ9W1kA5M6AMJRHUZlpYZ1/SbEwtO0ioNAW8rUooVpC/WehY2SfA==}
