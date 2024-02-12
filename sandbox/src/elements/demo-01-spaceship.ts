@@ -1,7 +1,7 @@
 import gsap from 'gsap'
 import * as THREE from 'three'
 import { debugGUI } from '../structure/debug-gui'
-import { alphaTexture, ambientOcclusionTexture, colorTexture, heightTexture, metalnessTexture, normalTexture, roughnessTexture } from './textures'
+import { Textures } from './textures'
 
 const debugObject = {
 	cube1Material: {
@@ -12,21 +12,21 @@ const debugObject = {
 
 const cube1 = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({ ...debugObject.cube1Material, wireframe: true }))
 	.add(new THREE.AxesHelper(2))
-const colorCube = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({ map: colorTexture }))
+const colorCube = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({ map: Textures.colorTexture }))
 	.translateX(1)
-const alphaCube = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({ map: alphaTexture }))
+const alphaCube = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({ map: Textures.alphaTexture }))
 	.translateY(1)
-const heightCube = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({ map: heightTexture }))
+const heightCube = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({ map: Textures.heightTexture }))
 	.translateX(2)
-const ambientCube = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({ map: ambientOcclusionTexture }))
+const ambientCube = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({ map: Textures.ambientOcclusionTexture }))
 	.translateX(-1)
-const metalCube = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({ map: metalnessTexture }))
+const metalCube = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({ map: Textures.metalnessTexture }))
 	.translateX(-2)
-const roughCube = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({ map: roughnessTexture }))
+const roughCube = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({ map: Textures.roughnessTexture }))
 	.translateOnAxis(new THREE.Vector3(-2, -1, 0), 1)
-const normalCube = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({ map: normalTexture }))
+const normalCube = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({ map: Textures.normalTexture }))
 	.translateOnAxis(new THREE.Vector3(-2, 1, 0), 1)
-const plasmaCannon = new THREE.Mesh(new THREE.ConeGeometry(.5, 1, 50), new THREE.MeshBasicMaterial({ map: colorTexture }))
+const plasmaCannon = new THREE.Mesh(new THREE.ConeGeometry(.5, 1, 50), new THREE.MeshBasicMaterial({ map: Textures.colorTexture }))
 	.translateX(3)
 	.rotateZ(- Math.PI / 2)
 
@@ -44,13 +44,13 @@ debugSpaceship.add(plasmaCannon.position, 'x')
 debugSpaceship.add(cube1, 'visible')
 debugSpaceship.add(cube1.material, 'wireframe')
 debugSpaceship.addColor(debugObject.cube1Material, 'color')
-	.onChange(_ => cube1.material.color.set(debugObject.cube1Material.color))
+	.onChange(() => cube1.material.color.set(debugObject.cube1Material.color))
 debugSpaceship.add(actions, 'spin')
 debugSpaceship.add(debugObject, 'subdivision')
 	.min(1)
 	.max(20)
 	.step(1)
-	.onFinishChange(_ => {
+	.onFinishChange(() => {
 		cube1.geometry.dispose()
 		cube1.geometry = new THREE.BoxGeometry(1, 1, 1, debugObject.subdivision, debugObject.subdivision, debugObject.subdivision)
 	})

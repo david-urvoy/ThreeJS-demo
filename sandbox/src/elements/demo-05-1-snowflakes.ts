@@ -26,7 +26,7 @@ setInterval(() => {
 
 }, SNOWFLAKE_DELAY_MS)
 
-new AnimatedRenderer({
+export const winterRenderer = new AnimatedRenderer({
 	animation: (delta, elapsedTime) => {
 		snowflakesPositions = snowflakesPositions
 			.filter(([_, y]) => y > -SCENE_DIMENSIONS.y / 2)
@@ -34,4 +34,4 @@ new AnimatedRenderer({
 		snowflakes.geometry = new BufferGeometry()
 		snowflakes.geometry.setAttribute('position', new BufferAttribute(new Float32Array(snowflakesPositions.flatMap(([x, y, z]) => [x, y, z])), 3))
 	}
-}).start()
+})
