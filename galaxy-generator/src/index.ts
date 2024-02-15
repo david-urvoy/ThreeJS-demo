@@ -10,12 +10,12 @@ scene.add(new AxesHelper(.2))
 
 const debugGalaxy = {
 	starsCount: 100000,
-	starsSize: .001,
+	starsSize: .01,
 	galaxySize: 5,
 	galaxyBranches: 3,
-	spin: 0,
-	randomness: .1,
-	randomnessDistribution: 1,
+	spin: 1,
+	randomness: .2,
+	randomnessDistribution: 3,
 	insideColor: '#99b6ff',
 	outsideColor: '#eaa81a'
 }
@@ -59,9 +59,9 @@ const bigBang = ({
 
 			return [
 				[
-					distanceFromCenter * Math.cos(branchAngle) + distributionRadius * Math.cos(distributionAngleTheta) * Math.cos(distributionAngleGamma),
-					distributionRadius * Math.cos(distributionAngleGamma) * Math.sin(distributionAngleTheta),
-					distanceFromCenter * Math.sin(branchAngle) + distributionRadius * Math.sin(distributionAngleGamma)
+					distanceFromCenter * Math.cos(branchAngle) + distributionRadius * Math.cos(distributionAngleTheta) * Math.cos(distributionAngleGamma) * 30 * distanceFromCenter,
+					distributionRadius * Math.cos(distributionAngleGamma) * Math.sin(distributionAngleTheta) * 30 * distanceFromCenter,
+					distanceFromCenter * Math.sin(branchAngle) + distributionRadius * Math.sin(distributionAngleGamma) * 30 * distanceFromCenter
 				], [
 					mixedColor.r,
 					mixedColor.g,
@@ -85,8 +85,6 @@ debugGUI.add(debugGalaxy, 'starsSize').min(.001).max(.1).step(.001)
 debugGUI.add(debugGalaxy, 'galaxySize').min(1).max(10).step(1)
 	.onFinishChange(bigBang)
 debugGUI.add(debugGalaxy, 'galaxyBranches').min(1).max(10).step(1)
-	.onFinishChange(bigBang)
-debugGUI.add(debugGalaxy, 'spin').min(-5).max(5).step(.001)
 	.onFinishChange(bigBang)
 debugGUI.add(debugGalaxy, 'randomness').min(0).max(2).step(.001)
 	.onFinishChange(bigBang)
