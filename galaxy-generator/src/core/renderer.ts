@@ -4,6 +4,7 @@ import { camera } from './camera'
 import eventEmitter from './event/event-emitter'
 import { scene } from './scene'
 import { WindowStore } from './store/application/window-store'
+import { stats } from './debug/monitor'
 
 export const canvas = document.getElementById("game-canvas") ?? undefined
 
@@ -12,6 +13,7 @@ export class AnimatedRenderer extends WebGLRenderer {
 	constructor () {
 		if (!WebGL.isWebGLAvailable()) document.getElementById('container')?.appendChild(WebGL.getWebGLErrorMessage())
 
+		stats.begin()
 		super({ canvas })
 
 		this.setSize(window.innerWidth, window.innerHeight)
@@ -31,6 +33,7 @@ export class AnimatedRenderer extends WebGLRenderer {
 		})
 
 		eventEmitter.subscribe('tick', () => this.render(scene, camera))
+		stats.end()
 	}
 
 }
