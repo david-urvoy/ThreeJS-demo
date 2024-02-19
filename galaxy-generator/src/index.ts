@@ -109,11 +109,6 @@ debugGUI.add(debugGalaxy, 'galaxySize').min(1).max(10).step(1)
 	.onFinishChange(bigBang)
 debugGUI.add(debugGalaxy, 'galaxyBranches').min(1).max(10).step(1)
 	.onFinishChange(bigBang)
-<<<<<<< HEAD
-=======
-// debugGUI.add(debugGalaxy, 'spin').min(-5).max(5).step(.001)
-// 	.onFinishChange(bigBang)
->>>>>>> 8b3ee05 (animated galaxy)
 debugGUI.add(debugGalaxy, 'randomness').min(0).max(2).step(.001)
 	.onFinishChange(bigBang)
 debugGUI.add(debugGalaxy, 'randomnessDistribution').min(1).max(10).step(.001)

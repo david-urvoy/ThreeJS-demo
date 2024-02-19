@@ -1,4 +1,4 @@
-import { BoxGeometry, CameraHelper, ConeGeometry, Group, Mesh, MeshLambertMaterial, MeshStandardMaterial, PlaneGeometry, SphereGeometry } from 'three'
+import { BoxGeometry, CameraHelper, Color, ConeGeometry, Fog, Group, Mesh, MeshLambertMaterial, MeshStandardMaterial, PlaneGeometry, SphereGeometry } from 'three'
 import { debugGUI } from '../structure/debug-gui'
 import { AnimatedRenderer } from '../structure/renderer'
 import { scene } from '../structure/scene'
@@ -6,7 +6,8 @@ import { Lights } from './lights'
 import { Textures } from './textures'
 
 const HauntedHouseState = {
-	rotation: false
+	rotation: true,
+	fogColor: '#ffffff'
 }
 
 /**
@@ -93,7 +94,14 @@ scene.add(directionalLight, ambientLight, lightCamera)
  * Run
  */
 export const HAUNTED_HOUSE = new Group().add(floor, house, cemetery)
-new AnimatedRenderer({ animation: time => HauntedHouseState.rotation && HAUNTED_HOUSE.rotateY(Math.PI * .01 * time) }).start()
+scene.add(HAUNTED_HOUSE)
+new AnimatedRenderer({
+	animation: time => {
+		if (HauntedHouseState.rotation) HAUNTED_HOUSE.rotation.y = Math.PI * .01 * time.elapsedTime
+	}
+}).start()
+
+scene.fog = new Fog(new Color(HauntedHouseState.fogColor), 0, 10)
 
 /**
  * Debug
@@ -107,3 +115,6 @@ debugHauntedHouse.add(directionalLight.position, 'x').min(-30).max(30).step(.5)
 debugHauntedHouse.add(directionalLight.position, 'y').min(5).max(20).step(.5)
 debugHauntedHouse.add(directionalLight.position, 'z').min(-30).max(30).step(.5)
 debugHauntedHouse.add(HauntedHouseState, 'rotation')
+debugHauntedHouse.addColor(HauntedHouseState, 'fogColor')
+	.onFinishChange((color: Color) => scene.fog?.color.set(new Color(color)))
+
