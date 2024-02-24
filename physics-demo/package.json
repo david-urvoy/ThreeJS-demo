@@ -1,0 +1,29 @@
+{
+	"name": "physics-demo",
+	"version": "1.0.0",
+	"description": "",
+	"type": "module",
+	"scripts": {
+		"build": "vite build",
+		"dev": "vite --host --no-open"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@types/cannon": "^0.1.12",
+		"cannon": "^0.6.2",
+		"gsap": "^3.12.5",
+		"lil-gui": "^0.19.1",
+		"three": "^0.161.0",
+		"three-core": "workspace:*",
+		"zustand": "^4.5.0"
+	},
+	"devDependencies": {
+		"@types/stats": "^0.16.30",
+		"@types/three": "^0.161.1",
+		"stats.js": "^0.17.0",
+		"typescript": "^5.3.3",
+		"vite": "^5.0.12"
+	}
+}

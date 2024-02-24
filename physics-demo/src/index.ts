@@ -1,8 +1,6 @@
 import { Body, Box, ContactMaterial, Material, Plane, SAPBroadphase, Vec3, World } from 'cannon'
-import { BoxGeometry, DirectionalLightHelper, Group, Mesh, MeshStandardMaterial, PlaneGeometry, Vector3 } from 'three'
-import { debugGUI } from '../structure/debug-gui'
-import { AnimatedRenderer } from '../structure/renderer'
-import { scene } from '../structure/scene'
+import { BoxGeometry, Group, Mesh, MeshStandardMaterial, PlaneGeometry, Vector3 } from 'three'
+import { debugGUI, scene, setupEnvironment } from 'three-core'
 import { Lights } from './lights'
 import { Textures } from './textures'
 
@@ -62,12 +60,13 @@ plane.receiveShadow = true
 Lights.directionalLight.translateY(10)
 Lights.directionalLight.intensity = 1
 
-scene.add(physicsGroup, Lights.directionalLight, new DirectionalLightHelper(Lights.directionalLight))
+scene.add(physicsGroup, Lights.directionalLight)
 
-export const physicsAnimation = new AnimatedRenderer({
-	animation: ({ delta }) => {
+setupEnvironment({
+	canvas: document.getElementById('demo-canvas') as HTMLCanvasElement,
+	onTick: clock => {
 		// cubeBody.applyForce(new Vec3(-.5, 0, 0), new Vec3(0, 0, 0))
-		physicsWorld.step(1 / 60, delta, 3)
+		physicsWorld.step(1 / 60, clock.getDelta(), 3)
 		cubes.forEach(({ mesh, body }) => {
 			mesh.position.set(body.position.x, body.position.y, body.position.z)
 			mesh.quaternion.set(body.quaternion.x, body.quaternion.y, body.quaternion.z, body.quaternion.w)
