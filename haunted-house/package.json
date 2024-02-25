@@ -14,7 +14,7 @@
 		"gsap": "^3.12.5",
 		"lil-gui": "^0.19.1",
 		"three": "^0.161.0",
-		"three-core": "0.0.3",
+		"three-core": "workspace:*",
 		"zustand": "^4.5.0"
 	},
 	"devDependencies": {
