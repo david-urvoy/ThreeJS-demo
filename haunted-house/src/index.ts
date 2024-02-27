@@ -1,23 +1,33 @@
-import { BoxGeometry, CameraHelper, Color, ConeGeometry, Fog, Group, Mesh, MeshLambertMaterial, MeshStandardMaterial, PlaneGeometry, SphereGeometry } from 'three'
+import { BoxGeometry, CameraHelper, Color, ConeGeometry, Fog, Group, Mesh, MeshStandardMaterial, PCFSoftShadowMap, PlaneGeometry, PointLight, SphereGeometry } from 'three'
 import { debugGUI, eventEmitter, setupEnvironment } from 'three-core'
 import { scene } from 'three-core/lib/scene'
 import { Lights } from './lights'
 import { Textures } from './textures'
 
 const HauntedHouseState = {
-	rotation: true,
-	fogColor: '#ffffff'
+	rotation: false,
+	fogColor: '#262837'
 }
 
 /**
  * Objects
  */
 
-const floor = new Mesh(new PlaneGeometry(20, 20), new MeshLambertMaterial({ map: Textures.grass, alphaMap: Textures.grass }))
+const floor = new Mesh(new PlaneGeometry(20, 20), new MeshStandardMaterial({
+	map: Textures.grass.color,
+	aoMap: Textures.grass.ambientOcclusion,
+	normalMap: Textures.grass.normal,
+	roughnessMap: Textures.grass.roughness
+}))
 	.rotateX(-Math.PI / 2)
 
 // HOUSE
-const walls = new Mesh(new BoxGeometry(4, 2.5, 4), new MeshStandardMaterial({ color: '#ac8e82' }))
+const walls = new Mesh(new BoxGeometry(4, 2.5, 4), new MeshStandardMaterial({
+	map: Textures.bricks.color,
+	aoMap: Textures.bricks.ambientOcclusion,
+	normalMap: Textures.bricks.normal,
+	roughnessMap: Textures.bricks.roughness
+}))
 walls.translateY(walls.geometry.parameters.height / 2 - .01)
 const wallsDepth = walls.geometry.parameters.depth / 2
 
@@ -25,7 +35,17 @@ const roof = new Mesh(new ConeGeometry(3.5, 1, 4), new MeshStandardMaterial({ co
 roof.translateY(walls.geometry.parameters.height + roof.geometry.parameters.height / 2)
 	.rotateY(Math.PI * .25)
 
-const door = new Mesh(new PlaneGeometry(1.5, 2.2), new MeshStandardMaterial({ map: Textures.colorTexture, transparent: true, alphaMap: Textures.alphaTexture }))
+const door = new Mesh(new PlaneGeometry(2.2, 2.2, 100, 100), new MeshStandardMaterial({
+	map: Textures.door.color,
+	transparent: true,
+	alphaMap: Textures.door.alpha,
+	aoMap: Textures.door.ambientOcclusion,
+	displacementMap: Textures.door.height,
+	displacementScale: .1,
+	normalMap: Textures.door.normal,
+	metalnessMap: Textures.door.metalness,
+	roughnessMap: Textures.door.roughness
+}))
 door.translateZ(wallsDepth + .01)
 	.translateY(door.geometry.parameters.height / 2)
 
@@ -61,11 +81,10 @@ const graves = [...Array(50)].map(() => {
 		.translateX(Math.cos(angle) * distance)
 		.translateZ(Math.sin(angle) * distance)
 	grave.scale.set(randomRatio, randomRatio, randomRatio)
+	grave.castShadow = true
 	return grave
 }
 )
-
-const cemetery = new Group().add(...graves)
 
 /**
  * Lights
@@ -74,34 +93,80 @@ house.children.forEach(child => child.receiveShadow = true)
 house.children.forEach(child => child.castShadow = true)
 floor.receiveShadow = true
 
-const { directionalLight, ambientLight } = { ...Lights }
-directionalLight.castShadow = true
+const { directionalLight: moonLight, ambientLight } = { ...Lights }
+ambientLight.color.set(0xb9d5ff)
+ambientLight.intensity = .12
 
-directionalLight.position.set(-30, 20, 0)
-directionalLight.target = roof
+moonLight.color.set(0xb9d5ff)
+moonLight.intensity = .26
+moonLight.castShadow = true
+moonLight.position.set(-5, 4, -3)
+moonLight.target = floor
 
-const lightCamera = new CameraHelper(directionalLight.shadow.camera)
+const doorLight = new PointLight('#ff7d46', 1, 7)
+doorLight.position.set(door.position.x, door.position.y + 1.25, door.position.z + .8)
+doorLight.castShadow = true
+
+const lightCamera = new CameraHelper(moonLight.shadow.camera)
 lightCamera.visible = false
+
+/**
+ * Ghosts
+ */
+const ghost1 = new PointLight('#ff00ff', 6, 3)
+scene.add(ghost1)
+
+const ghost2 = new PointLight('#00ffff', 6, 3)
+scene.add(ghost2)
+
+const ghost3 = new PointLight('#ffff00', 6, 3)
+scene.add(ghost3)
+
+const cemetery = new Group().add(...graves)
+ghost1.castShadow = true
+ghost2.castShadow = true
+ghost3.castShadow = true
 
 /**
  * Scene
 */
 scene.add(floor)
-scene.add(directionalLight, ambientLight, lightCamera)
+scene.add(moonLight, ambientLight, lightCamera)
 
-setupEnvironment({ canvas: document.getElementById('demo-canvas') as HTMLCanvasElement, position: { y: 3, z: 12 } })
+const { renderer } = setupEnvironment({ canvas: document.getElementById('demo-canvas') as HTMLCanvasElement, position: { y: 3, z: 12 } })
+renderer.setClearColor('#262837')
+renderer.shadowMap.enabled = true
+
+renderer.shadowMap.type = PCFSoftShadowMap
+
+scene.fog = new Fog(new Color(HauntedHouseState.fogColor), 1, 15)
 
 /**
  * Run
  */
-export const HAUNTED_HOUSE = new Group().add(floor, house, cemetery)
+export const HAUNTED_HOUSE = new Group().add(floor, house, cemetery, doorLight)
 scene.add(HAUNTED_HOUSE)
 eventEmitter.subscribe('tick', time => {
 	if (HauntedHouseState.rotation) HAUNTED_HOUSE.rotation.y = Math.PI * .01 * time.getElapsedTime()
-}
-)
 
-scene.fog = new Fog(new Color(HauntedHouseState.fogColor), 0, 12)
+	// Ghosts
+	const elapsedTime = time.getElapsedTime()
+	const ghost1Angle = elapsedTime * 0.5
+	ghost1.position.x = Math.cos(ghost1Angle) * 4
+	ghost1.position.z = Math.sin(ghost1Angle) * 4
+	ghost1.position.y = Math.sin(elapsedTime * 3)
+
+	const ghost2Angle = - elapsedTime * 0.32
+	ghost2.position.x = Math.cos(ghost2Angle) * 5
+	ghost2.position.z = Math.sin(ghost2Angle) * 5
+	ghost2.position.y = Math.sin(elapsedTime * 4) + Math.sin(elapsedTime * 2.5)
+
+	const ghost3Angle = - elapsedTime * 0.18
+	ghost3.position.x = Math.cos(ghost3Angle) * (7 + Math.sin(elapsedTime * 0.32))
+	ghost3.position.z = Math.sin(ghost3Angle) * (7 + Math.sin(elapsedTime * 0.5))
+	ghost3.position.y = Math.sin(elapsedTime * 4) + Math.sin(elapsedTime * 2.5)
+
+})
 
 /**
  * Debug
@@ -109,11 +174,11 @@ scene.fog = new Fog(new Color(HauntedHouseState.fogColor), 0, 12)
 const debugHauntedHouse = debugGUI.addFolder('Haunted House')
 debugHauntedHouse.add(ambientLight, 'intensity').name('Ambient light')
 	.min(0).max(1).step(.01)
-debugHauntedHouse.add(directionalLight, 'intensity').name('Directional light')
+debugHauntedHouse.add(moonLight, 'intensity').name('Directional light')
 	.min(0).max(1).step(.01)
-debugHauntedHouse.add(directionalLight.position, 'x').min(-30).max(30).step(.5)
-debugHauntedHouse.add(directionalLight.position, 'y').min(5).max(20).step(.5)
-debugHauntedHouse.add(directionalLight.position, 'z').min(-30).max(30).step(.5)
+debugHauntedHouse.add(moonLight.position, 'x').min(-30).max(30).step(.5)
+debugHauntedHouse.add(moonLight.position, 'y').min(5).max(20).step(.5)
+debugHauntedHouse.add(moonLight.position, 'z').min(-30).max(30).step(.5)
 debugHauntedHouse.add(HauntedHouseState, 'rotation')
 debugHauntedHouse.addColor(HauntedHouseState, 'fogColor')
 	.onFinishChange((color: Color) => scene.fog?.color.set(new Color(color)))
