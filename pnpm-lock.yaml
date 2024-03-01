@@ -176,6 +176,9 @@ importers:
       vite:
         specifier: ^5.1.4
         version: 5.1.5
+      vite-plugin-glsl:
+        specifier: ^1.1.2
+        version: 1.2.1(vite@5.1.5)
 
   raging-sea:
     dependencies:

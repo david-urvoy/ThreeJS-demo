@@ -1,31 +1,19 @@
 import { useGLTF, useTexture } from '@react-three/drei'
 import { GroupProps } from '@react-three/fiber'
 import { MeshStandardMaterial } from 'three'
+import { NestedObjectMap } from '../types/glb-types'
+import Fireflies from './Fireflies'
+import { ObjectLights } from './Lights'
 
-export default function Portal(props: GroupProps) {
+export default function Portal(props: GroupProps & { unwrappedPath: string }) {
 
-	const { nodes } = useGLTF('/portal.glb')
-	const texture = useTexture('/final-portal.jpg')
+	const { nodes } = useGLTF('/portal.glb') as unknown as NestedObjectMap
+	const texture = useTexture(`/${props.unwrappedPath}.jpg`)
 	texture.flipY = false
 
 	return <group {...props} dispose={null}>
-		<mesh
-			geometry={nodes.Portal.geometry}
-			material={nodes.Portal.material}
-			position={[-0.001, 0.969, -1.775]}
-			rotation={[-1.566, 1.414, 3.137]}
-		/>
-		<mesh
-			geometry={nodes["pole-light001"].geometry}
-			material={nodes["pole-light001"].material}
-			position={[-1.045, 0.516, 0.219]}
-			rotation={[Math.PI, 0, Math.PI]}
-		/>
-		<mesh
-			geometry={nodes["pole-light002"].geometry}
-			material={nodes["pole-light002"].material}
-			position={[1.117, 0.516, 0.193]}
-		/>
+		<ObjectLights nodes={nodes} />
+		<Fireflies />
 		<mesh
 			geometry={nodes.Wood.geometry}
 			material={new MeshStandardMaterial({ map: texture })}

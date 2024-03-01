@@ -30,6 +30,7 @@
 		"r3f-perf": "^7.1.2",
 		"spectorjs": "^0.9.30",
 		"typescript": "^5.2.2",
-		"vite": "^5.1.4"
+		"vite": "^5.1.4",
+		"vite-plugin-glsl": "^1.1.2"
 	}
 }

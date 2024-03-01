@@ -1,4 +1,4 @@
-import { OrbitControls } from '@react-three/drei'
+import { MapControls } from '@react-three/drei'
 import { button, useControls } from 'leva'
 import { Perf } from 'r3f-perf'
 import { useState } from 'react'
@@ -10,11 +10,14 @@ import PortalTextureless from './world/Portal-textureless'
 function App() {
 
 	const [lights, setLights] = useState<'ambient' | 'directional'>('directional')
-	useControls('Three Journey', { ToggleLights: button(() => setLights(value => value === 'ambient' ? 'directional' : 'ambient')) })
+	const { Background } = useControls('Three Portal', {
+		Background: '#111f13',
+		ToggleLights: button(() => setLights(value => value === 'ambient' ? 'directional' : 'ambient'))
+	})
 
 	return <>
-		<color attach='background' args={['black']} />
-		<OrbitControls makeDefault />
+		<color attach='background' args={[Background]} />
+		<MapControls makeDefault />
 		<Perf position="top-left" />
 		{
 			lights === 'ambient' ? <ambientLight />
@@ -25,8 +28,9 @@ function App() {
 		}
 
 		<PortalTextureless />
-		<Portal position-z={-8} />
-		<PortalJourney position-z={-16} />
+		<Portal unwrappedPath='final-portal' position-z={-8} />
+		<Portal unwrappedPath='final-portal-night' position-z={-16} />
+		<PortalJourney position-z={-24} />
 	</>
 
 }
