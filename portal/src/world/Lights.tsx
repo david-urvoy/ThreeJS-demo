@@ -2,7 +2,7 @@ import { useHelper } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import { useControls } from 'leva'
 import { useRef } from 'react'
-import { DirectionalLight, DirectionalLightHelper, MeshBasicMaterial } from 'three'
+import { DirectionalLight, DirectionalLightHelper } from 'three'
 import { NestedObjectMap } from '../types/glb-types'
 import { PortalShader } from './PortalShader'
 
@@ -36,26 +36,17 @@ export const SunLight = () => {
 	/>
 }
 
-const PoleLightMaterial = new MeshBasicMaterial({ color: '#e6c7bb' })
+const PoleLightMaterial = () => <meshBasicMaterial color='#e6c7bb' />
 export const ObjectLights = ({ nodes }: NestedObjectMap) => {
 	return <>
-		<mesh
-			geometry={nodes.Portal.geometry}
-			position={[-0.001, 0.969, -1.775]}
-			rotation={[-1.566, 1.414, 3.137]}
-		>
+		<mesh geometry={nodes.Portal.geometry} position={[-0.001, 0.969, -1.775]} rotation={[-1.566, 1.414, 3.137]}>
 			<PortalShader />
 		</mesh>
-		<mesh
-			geometry={nodes["pole-light001"].geometry}
-			material={PoleLightMaterial}
-			position={[-1.045, 0.516, 0.219]}
-			rotation={[Math.PI, 0, Math.PI]}
-		/>
-		<mesh
-			geometry={nodes["pole-light002"].geometry}
-			material={PoleLightMaterial}
-			position={[1.117, 0.516, 0.193]}
-		/>
+		<mesh geometry={nodes["pole-light001"].geometry} position={[-1.045, 0.516, 0.219]} rotation={[Math.PI, 0, Math.PI]}>
+			<PoleLightMaterial />
+		</mesh>
+		<mesh geometry={nodes["pole-light002"].geometry} position={[1.117, 0.516, 0.193]}>
+			<PoleLightMaterial />
+		</mesh>
 	</>
 }
