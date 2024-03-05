@@ -10,7 +10,6 @@ export const MoonLight = () => <directionalLight scale={10} color='#FFF8DE' inte
 
 export const SunLight = () => {
 
-
 	const debug = useControls('Three Portal', {
 		SunPosition: { min: -10, max: 10, value: 0 }
 	})
