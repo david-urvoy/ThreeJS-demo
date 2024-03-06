@@ -1,8 +1,7 @@
-import { MapControls } from '@react-three/drei'
+import { Center, MapControls } from '@react-three/drei'
 import { button, useControls } from 'leva'
 import { Perf } from 'r3f-perf'
 import { useState } from 'react'
-import { MoonLight, SunLight } from './world/Lights'
 import Portal from './world/Portal'
 import PortalJourney from './world/Portal-Journey'
 import PortalTextureless from './world/Portal-textureless'
@@ -19,18 +18,13 @@ function App() {
 		<color attach='background' args={[Background]} />
 		<MapControls makeDefault />
 		<Perf position="top-left" />
-		{
-			lights === 'ambient' ? <ambientLight />
-				: <>
-					<SunLight />
-					<MoonLight />
-				</>
-		}
-
-		<PortalTextureless />
-		<Portal unwrappedPath='final-portal' position-z={-8} />
-		<Portal unwrappedPath='final-portal-night' position-z={-16} />
-		<PortalJourney position-z={-24} />
+		<Center>
+			{lights === 'ambient' && <ambientLight />}
+			<PortalTextureless />
+			<Portal unwrappedPath='final-portal' position-z={-8} />
+			<Portal unwrappedPath='final-portal-night' position-z={-16} />
+			<PortalJourney position-z={-24} />
+		</Center>
 	</>
 
 }
