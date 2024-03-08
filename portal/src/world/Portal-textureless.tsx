@@ -1,9 +1,8 @@
-import { useGLTF } from '@react-three/drei'
+import { Sparkles, useGLTF } from '@react-three/drei'
 import { GroupProps } from '@react-three/fiber'
 import { PropsWithChildren } from 'react'
 import { Mesh, MeshStandardMaterial } from 'three'
 import { NestedObjectMap } from '../types/glb-types'
-import Fireflies from './Fireflies'
 import { MoonLight, ObjectLights, SunLight } from './Lights'
 
 export default function PortalTextureless(props: PropsWithChildren<GroupProps>) {
@@ -20,7 +19,7 @@ export default function PortalTextureless(props: PropsWithChildren<GroupProps>) 
 		<pointLight position={[-0.001, 0.969, -1.775]} distance={2.5} />
 		<pointLight position={[-0.571, 1.148, 0.219]} distance={1.5} />
 		<pointLight position={[0.642, 1.148, 0.193]} distance={1.5} />
-		<Fireflies />
+		<Sparkles size={6} scale={[4, 2, 4]} position-y={1} count={40} speed={.2} />
 		<mesh castShadow receiveShadow geometry={nodes.Wood.geometry} position={[1.2, 0.001, 1.449]} >
 			<meshStandardMaterial color='orange' />
 		</mesh>
