@@ -8,7 +8,7 @@ import './index.css'
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<React.StrictMode>
 		<Leva collapsed />
-		<Canvas shadows>
+		<Canvas shadows flat>
 			<App />
 		</Canvas>
 	</React.StrictMode>,

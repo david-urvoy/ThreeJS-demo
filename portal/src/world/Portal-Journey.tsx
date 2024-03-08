@@ -27,7 +27,7 @@ export default function PortalJourney(props: GroupProps) {
 			<PoleLightMaterial />
 		</mesh>
 		<mesh geometry={nodes.baked.geometry}>
-			<meshStandardMaterial map={texture} />
+			<meshBasicMaterial map={texture} />
 		</mesh>
 	</group>
 }

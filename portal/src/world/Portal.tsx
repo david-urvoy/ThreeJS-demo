@@ -9,7 +9,7 @@ export default function Portal(props: GroupProps & { unwrappedPath: string }) {
 	const { nodes } = useGLTF('/portal.glb') as unknown as NestedObjectMap
 	const texture = useTexture(`/${props.unwrappedPath}.jpg`)
 
-	const PortalTexture = () => <meshStandardMaterial map={texture} map-flipY={false} />
+	const PortalTexture = () => <meshBasicMaterial map={texture} map-flipY={false} />
 
 	return <group {...props} dispose={null}>
 		<ObjectLights nodes={nodes} />
