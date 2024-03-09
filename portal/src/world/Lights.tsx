@@ -35,17 +35,17 @@ export const SunLight = ({ target }: { target: Object3D }) => {
 	/>
 }
 
-const PoleLightMaterial = () => <meshBasicMaterial color='#e6c7bb' />
+const PoleLightMaterial = <meshBasicMaterial color='#e6c7bb' />
 export const ObjectLights = ({ nodes }: NestedObjectMap) => {
 	return <>
 		<mesh geometry={nodes.Portal.geometry} position={nodes.Portal.position} rotation={[-1.566, 1.414, 3.137]}>
 			<PortalShader />
 		</mesh>
 		<mesh geometry={nodes["pole-light001"].geometry} position={nodes["pole-light001"].position} rotation={[Math.PI, 0, Math.PI]}>
-			<PoleLightMaterial />
+			{PoleLightMaterial}
 		</mesh>
 		<mesh geometry={nodes["pole-light002"].geometry} position={nodes["pole-light002"].position}>
-			<PoleLightMaterial />
+			{PoleLightMaterial}
 		</mesh>
 	</>
 }

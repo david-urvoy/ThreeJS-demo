@@ -1,11 +1,25 @@
-import { useFrame } from '@react-three/fiber'
+import { shaderMaterial } from '@react-three/drei'
+import { Object3DNode, extend, useFrame } from '@react-three/fiber'
 import { useControls } from 'leva'
 import { useRef } from 'react'
 import { Color, ShaderMaterial } from 'three'
 import portalFragmentShader from '../shaders/portal/fragment.glsl'
 import portalVertexShader from '../shaders/portal/vertex.glsl'
 
+interface PortalMaterial extends ShaderMaterial {
+	uTime: number,
+	uColorStart: Color,
+	uColorEnd: Color
+}
+declare module '@react-three/fiber' {
+	interface ThreeElements {
+		portalMaterial: Object3DNode<PortalMaterial, PortalMaterial>
+	}
+}
+
 export function PortalShader() {
+
+	const shaderRef = useRef<PortalMaterial>(null!)
 
 	const { ColorStart, ColorEnd } = useControls('Three Portal', {
 		ColorStart: {
@@ -18,17 +32,17 @@ export function PortalShader() {
 		},
 	}) as unknown as { ColorStart: string, ColorEnd: string }
 
-	const shaderRef = useRef<ShaderMaterial>(null!)
-	useFrame(({ clock }) => shaderRef.current.uniforms.uTime.value = clock.getElapsedTime())
+	extend({
+		PortalMaterial: shaderMaterial({
+			uTime: 0,
+			uColorStart: new Color(ColorStart),
+			uColorEnd: new Color(ColorEnd),
+		},
+			portalVertexShader, portalFragmentShader
+		)
+	})
 
-	return <shaderMaterial
-		ref={shaderRef}
-		vertexShader={portalVertexShader}
-		fragmentShader={portalFragmentShader}
-		uniforms={{
-			uTime: { value: 0 },
-			uColorStart: { value: new Color(ColorStart) },
-			uColorEnd: { value: new Color(ColorEnd) },
-		}}
-	/>
+	useFrame((_, delta) => shaderRef.current.uTime += delta)
+
+	return <portalMaterial ref={shaderRef} />
 }
