@@ -7,21 +7,30 @@
 		"build": "vite build",
 		"dev": "vite --host --no-open"
 	},
-	"keywords": [],
+	"keywords": [ ],
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"gsap": "^3.12.5",
-		"lil-gui": "^0.19.1",
-		"three": "^0.161.0",
-		"three-core": "workspace:*",
-		"zustand": "^4.5.0"
+		"@react-three/drei": "^9.105.6",
+		"@react-three/fiber": "^8.16.3",
+		"leva": "^0.9.35",
+		"react": "^18.3.1",
+		"react-dom": "^18.3.1",
+		"three": "^0.161.0"
 	},
 	"devDependencies": {
-		"@types/stats": "^0.16.30",
-		"@types/three": "^0.161.1",
-		"stats.js": "^0.17.0",
-		"typescript": "^5.3.3",
-		"vite": "^5.0.12"
+		"@types/react": "^18.3.1",
+		"@types/react-dom": "^18.3.0",
+		"@types/three": "^0.162.0",
+		"@typescript-eslint/eslint-plugin": "^7.8.0",
+		"@typescript-eslint/parser": "^7.8.0",
+		"@vitejs/plugin-react-swc": "^3.6.0",
+		"eslint": "^8.57.0",
+		"eslint-plugin-react-hooks": "^4.6.2",
+		"eslint-plugin-react-refresh": "^0.4.6",
+		"r3f-perf": "^7.2.1",
+		"three-stdlib": "^2.29.11",
+		"typescript": "^5.4.5",
+		"vite": "^5.2.11"
 	}
 }
